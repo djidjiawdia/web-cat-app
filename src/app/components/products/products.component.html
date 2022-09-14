@@ -1,0 +1,62 @@
+<div class="w-full flex flex-col space-y-4 p-4">
+  <div class="flex items-center space-x-4">
+    <button (click)="onGetAllProducts()" class="p-2 border rounded-md text-blue-400 border-blue-400">All</button>
+    <button (click)="onGetSelectedProducts()" class="p-2 border rounded-md text-blue-400 border-blue-400">Selected</button>
+    <button (click)="onGetAvailableProducts()" class="p-2 border rounded-md text-blue-400 border-blue-400">Available</button>
+    <form class="flex-1 flex items-center justify-end space-x-3" #f="ngForm" (ngSubmit)="onSearch(f.value)">
+      <input type="text" ngModel name="keyword" class="w-full max-w-96 rounded-md p-2 border">
+      <button class="p-2 rounded-md text-white bg-blue-400">Search</button>
+    </form>
+  </div>
+
+  <ng-container *ngIf="products$ | async as result" [ngSwitch]="result.state">
+    <ng-container *ngSwitchCase="State.LOADING">
+      <div class="flex justify-center items-center">
+        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"></div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="State.ERROR">
+      <div class="flex justify-center items-center">
+        <div class="text-red-500">{{ result.error | json }}</div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="State.LOADED">
+      <div class="">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Selected</th>
+              <th>Available</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of result.data">
+              <td>{{ product.id }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.quantity }}</td>
+              <td>{{ product.selected }}</td>
+              <td>{{ product.available }}</td>
+              <td>
+                <button (click)="onSelect(product)" class="p-1 rounded-md text-white"
+                [ngClass]="product.selected ? 'bg-green-500' : 'bg-red-500'">
+                  <span>{{ product.selected ? 'Unselect' : 'Select' }}</span>
+                </button>
+              </td>
+              <td>
+                <button class="text-red-500 underline text-sm font-light" (click)="onDelete(product)">
+                  delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+  </ng-container>
+
+</div>

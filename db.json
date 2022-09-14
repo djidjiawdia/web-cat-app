@@ -1,0 +1,22 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Computer",
+      "price": 199.99,
+      "category": "Electronics",
+      "quantity": 120,
+      "selected": true,
+      "available": true
+    },
+    {
+      "id": 2,
+      "name": "Printer",
+      "price": 79.99,
+      "category": "Electronics",
+      "quantity": 20,
+      "selected": false,
+      "available": true
+    }
+  ]
+}
